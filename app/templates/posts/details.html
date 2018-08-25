@@ -1,0 +1,217 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+    <!-- main -->
+	<section id="main" class="clearfix details-page">
+		<div class="container">
+			<div class="section slider">
+				<div class="row">
+					<!-- carousel -->
+					<div class="col-md-7">
+						<div id="myCarousel" class="carousel slide" data-ride="carousel">
+                          <!-- Indicators -->
+{#                          <ol class="carousel-indicators" style="background-color: black">#}
+
+{#                          </ol>#}
+
+                          <!-- Wrapper for slides -->
+                          <div class="carousel-inner">
+                          {% for url in post.images_url %}
+                            <div class="item {% if forloop.first %} active {% endif %}" style="height: 450px; text-align: center">
+                              <img src="{% static url %}" alt="sellit" width="100%" height="" align="center">
+                            </div>
+                          {% endfor %}
+                          </div>
+
+
+                          <!-- Left and right controls -->
+                          <a class="left carousel-control" href="#myCarousel" data-slide="prev">
+                            <span class="glyphicon glyphicon-chevron-left"></span>
+                            <span class="sr-only">Previous</span>
+                          </a>
+                          <a class="right carousel-control" href="#myCarousel" data-slide="next">
+                            <span class="glyphicon glyphicon-chevron-right"></span>
+                            <span class="sr-only">Next</span>
+                          </a>
+                        </div>
+                        <div style="margin-top: 10px">
+                            {% for url in post.images_url %}
+                                <img src="{% static url %}" alt="sellit" height="100" width="100"
+                                     data-target="#myCarousel" data-slide-to="{{ forloop.counter0 }}"
+                                     class="{% if forloop.first %} active {% endif %}"
+                                     >
+                            {% endfor %}
+                        </div>
+					</div><!-- Controls -->
+
+					<!-- slider-text -->
+					<div class="col-md-5">
+						<div class="slider-text">
+							<h2>{{ post.price }} </h2>
+							<h3 class="title">{{ post.title }}</h3>
+							<span class="icon"><i class="fa fa-clock-o"></i><a href="#">{{ post.created }}</a></span>
+{#							<span class="icon"><i class="fa fa-map-marker"></i><a href="#">Los Angeles, USA</a></span>#}
+{#							<span class="icon"><i class="fa fa-suitcase online"></i><a href="#">Dealer <strong>({{ post.phone_no }})</strong></a></span>#}
+
+							<!-- short-info -->
+{#							<div class="short-info">#}
+{#								<h4>Short Info</h4>#}
+{#								<p><strong>Condition: </strong><a href="#">New</a> </p>#}
+{#								<p><strong>Brand: </strong><a href="#">Apple</a> </p>#}
+{#								<p><strong>Features: </strong><a href="#">Camera,</a> <a href="#">Dual SIM,</a> <a href="#">GSM,</a> <a href="#">Touch screen</a> </p>#}
+{#								<p><strong>Model: </strong><a href="#">iPhone 6</a></p>#}
+{#							</div>#}
+                            <div class="short-info">
+                                <p style="text-align: justify">
+                                    {{ post.description }}
+                                </p>
+                            </div>
+                            <!-- short-info -->
+
+							<!-- contact-with -->
+							<div class="contact-with">
+								<h4>Contact with </h4>
+								<span class="btn btn-red show-number">
+									<i class="fa fa-phone-square"></i>
+									<span class="hide-text">Click to show phone number </span>
+									<span class="hide-number">{{ post.phone_no }}</span>
+								</span>
+							</div><!-- contact-with -->
+
+							<!-- social-links -->
+{#							<div class="social-links">#}
+{#								<h4>Share this ad</h4>#}
+{#								<ul class="list-inline">#}
+{#									<li><a href="#"><i class="fa fa-facebook-square"></i></a></li>#}
+{#									<li><a href="#"><i class="fa fa-twitter-square"></i></a></li>#}
+{#									<li><a href="#"><i class="fa fa-google-plus-square"></i></a></li>#}
+{#									<li><a href="#"><i class="fa fa-linkedin-square"></i></a></li>#}
+{#									<li><a href="#"><i class="fa fa-pinterest-square"></i></a></li>#}
+{#									<li><a href="#"><i class="fa fa-tumblr-square"></i></a></li>#}
+{#								</ul>#}
+{#							</div>#}
+                            <!-- social-links -->
+						</div>
+					</div><!-- slider-text -->
+				</div>
+			</div><!-- slider -->
+
+{#			<div class="description-info">#}
+{#				<div class="row">#}
+{#					<!-- description -->#}
+{#					<div class="col-md-8">#}
+{#						<div class="description">#}
+{#							<h4>Description</h4>#}
+{#							<p>{{ post.description }}</p><br>#}
+{#						</div>#}
+{#					</div><!-- description -->#}
+{##}
+{#					<!-- description-short-info -->#}
+{#					<div class="col-md-4">#}
+{#						<div class="short-info">#}
+{#							<h4>Short Info</h4>#}
+{#							<!-- social-icon -->#}
+{#							<ul>#}
+{#								<li><i class="fa fa-shopping-cart"></i><a href="#">Delivery: Meet in person</a></li>#}
+{#								<li><i class="fa fa-user-plus"></i><a href="#">More ads by <span>Yury Corporation</span></a></li>#}
+{#								<li><i class="fa fa-print"></i><a href="#">Print this ad</a></li>#}
+{#								<li><i class="fa fa-reply"></i><a href="#">Send to a friend</a></li>#}
+{#								<li><i class="fa fa-heart-o"></i><a href="#">Save ad as Favorite</a></li>#}
+{#								<li><i class="fa fa-exclamation-triangle"></i><a href="#">Report this ad</a></li>#}
+{#							</ul><!-- social-icon -->#}
+{#						</div>#}
+{#					</div>#}
+{#				</div><!-- row -->#}
+{#			</div>#}
+            <!-- featureds -->
+			<div class="section featureds">
+				<div class="row">
+					<!-- featured-top -->
+					<div class="col-sm-12">
+						<div class="featured-top">
+							<h4>Related Ads</h4>
+						</div>
+					</div>
+                    <!-- featured-top -->
+				</div>
+
+				<div class="row">
+					<!-- featured -->
+                    {% for post in posts %}
+					<div class="col-sm-6 col-md-4 col-lg-3">
+						<!-- featured -->
+                        <a href="{% url 'post-detail' post.slug %}">
+						    <div class="featured">
+							<div class="featured-image" >
+								<img src="{% static post.post_image_url %}" alt="" height="250px" class="img-respocive">
+{#								<a href="#" class="verified" data-toggle="tooltip" data-placement="top" title="Verified"><i class="fa fa-check-square-o"></i></a>#}
+							</div>
+
+							<!-- ad-info -->
+							<div class="ad-info">
+                                <h4 class="item-title">{{ post.title | truncatechars:10 }}</h4>
+                                <h3 class="item-price">{{ post.price }}</h3>
+								<div class="item-cat">
+									<span>{{ post.category }}</span>
+								</div>
+							</div>
+                            <!-- ad-info -->
+
+							<!-- ad-meta -->
+{#							<div class="ad-meta">#}
+{#								<div class="meta-content">#}
+{#									<span class="dated"><a href="#">{{ post.created }} </a></span>#}
+{#								</div>#}
+								<!-- item-info-right -->
+{#								<div class="user-option pull-right">#}
+{#									<a href="#" data-toggle="tooltip" data-placement="top" title="Los Angeles, USA"><i class="fa fa-map-marker"></i> </a>#}
+{#									<a href="#" data-toggle="tooltip" data-placement="top" title="Individual"><i class="fa fa-suitcase"></i> </a>#}
+{#								</div>#}
+                                <!-- item-info-right -->
+{#							</div>#}
+                            <!-- ad-meta -->
+						</div>
+                        </a>
+                        <!-- featured -->
+					</div>
+                    {% endfor %}
+				</div>
+                <!-- row -->
+
+				<!-- pagination  -->
+				<div class="text-center">
+					<ul class="pagination ">
+						<li><a href="#"><i class="fa fa-chevron-left"></i></a></li>
+						<li><a href="#">1</a></li>
+						<li class="active"><a href="#">2</a></li>
+						<li><a href="#">3</a></li>
+						<li><a href="#">4</a></li>
+						<li><a href="#">5</a></li>
+						<li><a>...</a></li>
+						<li><a href="#">10</a></li>
+						<li><a href="#">20</a></li>
+						<li><a href="#">30</a></li>
+						<li><a href="#"><i class="fa fa-chevron-right"></i></a></li>
+					</ul>
+				</div><!-- pagination  -->
+			</div>
+            <!-- featureds -->
+		</div><!-- container -->
+	</section>
+	<!-- main -->
+
+	<!-- download -->
+	<section id="something-sell" class="clearfix parallax-section">
+		<div class="container">
+			<div class="row">
+				<div class="col-sm-12 text-center">
+					<h2 class="title">Do you have something-sell?</h2>
+					<h4>Post your ad for free on Trade.com</h4>
+					<a href="{% url 'add-post' %}" class="btn btn-primary">Post Your Ad</a>
+				</div>
+			</div><!-- row -->
+		</div><!-- contaioner -->
+	</section>
+	<!-- download -->
+{% endblock %}

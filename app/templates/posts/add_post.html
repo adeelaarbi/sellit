@@ -1,0 +1,158 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+    <!-- main -->
+	<section id="main" class="clearfix ad-details-page">
+		<div class="container">
+
+			<div class="breadcrumb-section">
+                <h2 class="title">Add Post</h2>
+				<!-- breadcrumb -->
+				<ol class="breadcrumb">
+					<li>
+                        <h4>Sell an item or service <span style="color: #ff0000">* </span>Mandatory Fields</h4>
+                    </li>
+				</ol>
+                <!-- breadcrumb -->
+			</div>
+            <!-- banner -->
+			<div class="adpost-details">
+				<div class="row">
+					<div class="col-md-12">
+						<form action="{% url 'add-post' %}" method="post" data-location-url="{% url 'load-locations' %}" id="postForm" enctype="multipart/form-data">
+                            {% csrf_token %}
+							<fieldset>
+								<div class="section postdetails col-md-5" style="background: none">
+
+									<div class="row form-group add-title">
+										<label class="col-sm-3 label-title">Title<span class="required">*</span></label>
+										<div class="col-sm-9">
+											{{ form.title }}
+										</div>
+									</div>
+                                    <div class="row form-group add-title">
+										<label class="col-sm-3 label-title">Slug<span class="required">*</span></label>
+										<div class="col-sm-9">
+											{{ form.slug }}
+										</div>
+									</div>
+{#									<div class="row form-group add-image">#}
+{#										<label class="col-sm-3 label-title">Photos for your ad <span>(This will be your cover photo )</span> </label>#}
+{#										<div class="col-sm-9">#}
+{#											<h5><i class="fa fa-upload" aria-hidden="true"></i>Select Files to Upload / Drag and Drop Files <span>You can add multiple images.</span></h5>#}
+{#											<div class="upload-section">#}
+{#												<label class="upload-image" for="upload-image-one">#}
+{#													<input type="file" id="upload-image-one">#}
+{#												</label>#}
+{##}
+{#												<label class="upload-image" for="upload-image-two">#}
+{#													<input type="file" id="upload-image-two">#}
+{#												</label>#}
+{#												<label class="upload-image" for="upload-image-three">#}
+{#													<input type="file" id="upload-image-three">#}
+{#												</label>#}
+{##}
+{#												<label class="upload-image" for="upload-imagefour">#}
+{#													<input type="file" id="upload-imagefour">#}
+{#												</label>#}
+{#											</div>#}
+{#										</div>#}
+{#									</div>#}
+                                    <div class="row form-group add-title">
+										<label class="col-sm-3 label-title">Price<span class="required">*</span></label>
+										<div class="col-sm-9">
+											{{ form.price }}
+										</div>
+									</div>
+                                    <div class="row form-group add-title">
+										<label class="col-sm-3 label-title">Mobile Number<span class="required">*</span></label>
+										<div class="col-sm-9">
+											{{ form.phone_no }}
+										</div>
+									</div>
+                                    <div class="row form-group add-title">
+										<label class="col-sm-3 label-title">Default Image<span class="required">*</span></label>
+										<div class="col-sm-9">
+											{{ form.image }}
+										</div>
+									</div>
+                                    <div class="row form-group add-title">
+										<label class="col-sm-3 label-title" for="id_images">Other Images<span class="required">*</span></label>
+										<div class="col-sm-9">
+                                            <input type="file" name="image1" id="id_image1"><br>
+                                            <input type="file" name="image2" id="id_image2"><br>
+                                            <input type="file" name="image3" id="id_image3"><br>
+                                            <input type="file" name="image4" id="id_image4">
+										</div>
+									</div>
+
+								</div>
+                                <div class="col-sm-1"></div>
+                                <div class="section postdetails col-md-6" style="background: none">
+                                    <div class="row form-group add-title">
+										<label class="col-sm-3 label-title">Category<span class="required">*</span></label>
+										<div class="col-sm-9">
+											{{ form.category }}
+										</div>
+									</div>
+                                    <div class="row form-group add-title">
+										<label class="col-sm-3 label-title" for="id_subcategory">Sub Category<span class="required">*</span></label>
+										<div class="col-sm-9">
+											<select name="sub_category" id="id_subcategory"></select>
+										</div>
+									</div>
+									<div class="row form-group item-description">
+										<label class="col-sm-3 label-title">Description<span class="required">*</span></label>
+										<div class="col-sm-9">
+											{{ form.description }}
+										</div>
+									</div>
+                                    <div class="row form-group item-description">
+										<label class="col-sm-3 label-title">State<span class="required">*</span></label>
+										<div class="col-sm-9">
+											{{ form.location }}
+										</div>
+									</div>
+                                    <div class="row form-group item-description">
+                                        <label class="col-sm-3 label-tags" for="id_city">City</label>
+                                        <div class="col-sm-9">
+                                            <select id="id_city" required>
+
+                                            </select>
+										</div>
+									</div>
+                                    <div class="row form-group item-description">
+                                        <label class="col-sm-3 label-tags" for="id_area">Area</label>
+                                        <div class="col-sm-9">
+                                            <select name="area" id="id_area" required>
+
+                                            </select>
+										</div>
+									</div>
+                                    <div class="row form-group item-description">
+                                        <label class="col-sm-3 label-tags" for="tags">Tags</label>
+                                        <div class="col-sm-9">
+                                            <input type="text" id="tags" name="tags" value=""/>
+										</div>
+									</div>
+{#									<div class="row">#}
+{#										<div class="col-sm-9 col-sm-offset-3">#}
+{#											<p>5000 characters left</p>#}
+{#										</div>#}
+{#									</div>#}
+                                    <div class="form-group">
+                                        <button type="submit" class="btn btn-primary pull-right">Post Your Ad</button>
+                                    </div>
+                                </div>
+
+							</fieldset>
+
+						</form><!-- form -->
+					</div>
+				</div><!-- photos-ad -->
+			</div>
+		</div><!-- container -->
+	</section>
+	<!-- main -->
+{% endblock %}
