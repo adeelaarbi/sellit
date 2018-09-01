@@ -1,13 +1,12 @@
 import pycountry
 from django.contrib.auth.decorators import login_required
 from django.utils.decorators import method_decorator
-from django.http import HttpResponse
 from django.views import generic
 from django.contrib.auth import login, authenticate
 from django.shortcuts import render, redirect
 from app.utils import upload_post_images, add_tags
-from .forms import SignUpForm, PostForm, PostImageForm
-from .models import Post, Tag, Location, Category, PostImage
+from .forms import SignUpForm, PostForm
+from .models import Post, Location, Category
 
 countries = [{str(country.name).lower(): str(country.name)} for country in pycountry.countries]
 
@@ -24,7 +23,7 @@ def signup(request):
             raw_password = form.cleaned_data.get('password1')
             user = authenticate(username=username, password=raw_password)
             login(request, user)
-            return redirect('posts')
+            return redirect('app:posts')
     else:
         form = SignUpForm()
     return render(request, 'posts/signup.html', {'errors': form.errors})
@@ -37,10 +36,10 @@ def load_locations_categories(request):
 
     if data == "category":
         category_id = request.GET.get('category')
-        categories = Category.objects.filter(parent_id=category_id).order_by('name')
+        categories = Category.objects.filter(parent_id=category_id)
         return render(request, 'posts/options.html', {'options': categories, 'type': type})
 
-    locations = Location.objects.filter(parent_id=location_id).order_by('name')
+    locations = Location.objects.filter(parent_id=location_id)
     return render(request, 'posts/options.html', {'options': locations, 'type': type})
 
 
@@ -48,30 +47,34 @@ def make_url(request):
     location_id = request.GET.get('location', None)
     query = request.GET.get('query', None)
     if not query and not location_id:
-        query = 'all_in_pakistan'
+        return redirect('app:search-list', 'all-in-pakistan')
     if location_id:
         location = Location.objects.get(pk=location_id)
-        location = location.name
+        location = location.name.replace(' ', '-')
         if query:
-            query = query + "_in_" + location
-            return redirect('search-list', query.lower())
-        query = location
-    return redirect('search-list', query.lower())
+            query = query.replace(' ', '-') + "-in-" + location
+            return redirect('app:search-list', query.lower())
+        return redirect('app:search-list', location.lower())
+    return redirect('app:search-list', query.replace(' ', '-').lower())
 
 
 def search_list(request, query=None):
     states = Location.objects.filter(parent=None)
     posts = Post.objects.filter(approved=True)
-    if '_' in query:
-        title = str(query).replace('_', ' ')
-        query, location = str(query).rsplit('_in_', -1)[0], str(query).rsplit('_in_', -1)[1]
-        posts = filter(lambda instance: str(location).lower() in instance.search_query(), posts)
+    if '-in-' in query:
+        title = query.replace('-', ' ')
+        query, location = str(query).rsplit('-in-', -1)[0], str(query).rsplit('-in-', -1)[1]
+        query = query if '-' not in query else query.replace('-', ' ')
+        location = location if '-' not in location else location.replace('-', ' ')
         if str(query).lower() != "all":
-            posts = filter(lambda instance: str(query).lower() in instance.search_query(), posts)
-        return render(request, 'posts/search_list.html', {'posts': posts, 'states': states, 'title': title})
-    title = query
-    posts = filter(lambda instance: str(query).lower() in instance.search_query(), posts)
-    return render(request, 'posts/search_list.html', {'posts': posts, 'states': states, 'title': title})
+            posts = list(filter(lambda instance: str(query).lower() in instance.search_query(), posts))
+        posts = list(filter(lambda instance: str(location).lower() in instance.search_query(), posts))
+        count = len(posts)
+        return render(request, 'posts/search_list.html', {'posts': posts, 'states': states, 'title': title, 'count': count})
+    query = query if '-' not in query else query.replace('-', ' ')
+    posts = list(filter(lambda instance: str(query).lower() in instance.search_query(), posts))
+    count = len(posts)
+    return render(request, 'posts/search_list.html', {'posts': posts, 'states': states, 'title': query, 'count': count})
 
 
 @login_required(login_url='login')
@@ -101,7 +104,7 @@ class PostListView(generic.ListView):
 
     def get_queryset(self):
         query = self.request.GET.get('query')
-        queryset = Post.objects.filter(approved=True).order_by('-created')
+        queryset = Post.objects.filter(approved=True)
         if query:
             queryset = filter(lambda x: str(query).lower() in str(x.title).lower() or
                                         str(query).lower() in str(x.category.name).lower() or
@@ -131,13 +134,13 @@ class PostAddView(generic.CreateView):
     model = Post
     template_name = 'posts/add_post.html'
     form_class = PostForm
-    success_url = 'posts'
+    success_url = 'app:posts'
     # queryset = None
 
     def get_context_data(self, **kwargs):
         # Call the base implementation first to get a context
         context = super().get_context_data(**kwargs)
-        # Add in a QuerySet of all the books
+        # Add in a QuerySet
         context['title'] = 'add new ads'
         return context
 
@@ -153,10 +156,8 @@ class PostAddView(generic.CreateView):
             # request.POST['category'] = request.POST.get("sub_category")
             form = self.get_form()
             if form.is_valid:
-                print(request.POST)
                 category_id = request.POST.get('sub_category')
                 location_id = request.POST.get('area')
-                print("Area :", location_id)
                 category = Category.objects.get(pk=category_id)
                 location = Location.objects.get(pk=int(location_id))
 

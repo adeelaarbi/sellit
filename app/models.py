@@ -23,6 +23,7 @@ class Category(BaseModel):
 
     class Meta:
         verbose_name_plural = "categories"       #categories under a parent with same
+        ordering = ('-created', 'name')
 
     def __str__(self):                           # __str__ method elaborated later in
         # full_path = [self.name]                  # post.  use __unicode__ in place of
@@ -37,7 +38,7 @@ class Category(BaseModel):
         return self.name
 
     def get_absolute_url(self):
-        return reverse('search-list', args=[str(self.name).lower()])
+        return reverse('app:search-list', args=[str(self.name).lower()])
 
     def load_image(self, width=50, height=50):
         url = '/static/sellit.png'
@@ -50,6 +51,9 @@ class Location(models.Model):
     name = models.CharField(max_length=100, blank=True, null=True)
     country = models.CharField(max_length=30, choices=countries, default="pakistan")
     parent = models.ForeignKey('self', blank=True, null=True, related_name='children',default='Pakistan', on_delete=models.CASCADE)
+
+    class Meta:
+        ordering = ('name',)
 
     def __str__(self):  # __str__ method elaborated later in
         # full_path = [self.name]  # post.  use __unicode__ in place of
@@ -76,7 +80,7 @@ class Location(models.Model):
 
 class Post(BaseModel):
     title = models.CharField(max_length=100)
-    price = models.IntegerField(default=0)
+    price = models.PositiveIntegerField(default=0)
     phone_no = models.CharField(max_length=20)
     image = models.ImageField(upload_to="app/static/app/post", null=True, blank=True)
     location = models.ForeignKey(Location, on_delete=models.SET_NULL, null=True)
@@ -84,14 +88,17 @@ class Post(BaseModel):
     sold = models.BooleanField(default=False)
     approved = models.BooleanField(default=False)
     user = models.ForeignKey(User, on_delete=models.CASCADE, null=True, blank=True)
-    views = models.IntegerField(default=0)
+    views = models.PositiveIntegerField(default=0)
     category = models.ForeignKey(Category, blank=True, null=True, on_delete=models.SET_NULL)
 
     def __str__(self):
         return self.title
 
+    class Meta:
+        ordering = ('-created', 'title')
+
     def get_absolute_url(self):
-        return reverse('post-detail', args=[str(self.slug)])
+        return reverse('app:post-detail', args=[str(self.slug)])
 
     def get_tags(self):
         return self.tag_set.all()
@@ -143,7 +150,7 @@ class Post(BaseModel):
         return ' '.join(full_path)
 
     def search_query(self):
-        query = str(self.title + " " + self.categories() + " " + self.address()).lower()
+        query = str(self.title + " " + self.tags().replace(',', '') + " " + self.categories() + " " + self.address()).lower()
         return query
 
 

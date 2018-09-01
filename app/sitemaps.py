@@ -13,6 +13,11 @@ class CategorySitemap(Sitemap):
     def items(self):
         return Category.objects.all()
 
+    def location(self, item):
+        item = self.items().filter(name=item).first()
+        item = str(item).replace(' ', '-').lower()
+        return reverse('app:search-list', args=[item])
+
 
 class LocationSitemap(Sitemap):
     def items(self):
@@ -20,23 +25,26 @@ class LocationSitemap(Sitemap):
 
     def location(self, item):
         item = self.items().filter(name=item).first()
-        return reverse('search-list', args=[str(item.name).lower()])
+        item = str(item).replace(' ', '-').lower()
+        return reverse('app:search-list', args=[item])
 
 
 class PostLocationSitemap(Sitemap):
     def items(self):
-        posts = [post.title + "_in_" + location.name for post in Post.objects.all() for location in Location.objects.all()]
+        posts = [post.title + "-in-" + location.name for post in Post.objects.all() for location in Location.objects.all()]
 
         return posts
 
     def location(self, obj):
-        return reverse('search-list', args=[str(obj).lower()])
+        obj = str(obj).replace(' ', '-').lower()
+        return reverse('app:search-list', args=[obj])
 
 
 class PostCategorySitemap(Sitemap):
     def items(self):
-        posts = [post.title + "_in_" + location.name for post in Post.objects.all() for location in Category.objects.all()]
+        posts = [post.title + "-in-" + location.name for post in Post.objects.all() for location in Category.objects.all()]
         return posts
 
     def location(self, obj):
-        return reverse('search-list', args=[str(obj).lower()])
+        obj = str(obj).replace(' ', '-').lower()
+        return reverse('app:search-list', args=[obj])

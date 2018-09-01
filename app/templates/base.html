@@ -6,7 +6,13 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="author" content="Theme Region">
    	<meta name="description" content="">
-    <title>{% block title %}{% if title %}{{ title }}{% endif %}{% endblock %}</title>
+    <title>
+        {% block title %}
+            {% if title %}
+                {{ title }}
+            {% endif %}
+        {% endblock %}
+    </title>
     {% include 'head.html' %}
 </head>
 

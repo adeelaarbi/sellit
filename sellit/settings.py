@@ -23,14 +23,15 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SECRET_KEY = '7$7$xi+!z36l3*+ipn@s^#nt20-@-b72&v($!_6v#aw#4-%h0s'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
-ALLOWED_HOSTS = ["aiwah.herokuapp.com"]
+ALLOWED_HOSTS = ["aiwah.pk", "127.0.0.1"]
 
 
 # Application definition
 
 INSTALLED_APPS = [
+    'app.apps.AppConfig',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -39,7 +40,6 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'django.contrib.sites',
     'django.contrib.sitemaps',
-    'app.apps.AppConfig'
 ]
 
 SITE_ID = 1
@@ -124,14 +124,15 @@ USE_TZ = True
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/2.0/howto/static-files/
-
-import dj_database_url
-db_from_env = dj_database_url.config(conn_max_age=500)
-DATABASES['default'].update(db_from_env)
-
 STATIC_URL = '/static/'
-STATICFILES_DIRS = [
-        os.path.join(BASE_DIR, "static"),
-    ]
-STATIC_ROOT = os.path.join(BASE_DIR, "staticfiles")
-STATICFILES_STORAGE = 'whitenoise.django.GzipManifestStaticFilesStorage'
+STATIC_ROOT = os.path.join(BASE_DIR, "app/static")
+# import dj_database_url
+# db_from_env = dj_database_url.config(conn_max_age=500)
+# DATABASES['default'].update(db_from_env)
+#
+# STATIC_URL = '/static/'
+# STATICFILES_DIRS = [
+#         os.path.join(BASE_DIR, "static"),
+#     ]
+# STATIC_ROOT = os.path.join(BASE_DIR, "staticfiles")
+# STATICFILES_STORAGE = 'whitenoise.django.GzipManifestStaticFilesStorage'

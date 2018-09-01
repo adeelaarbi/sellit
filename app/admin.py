@@ -64,4 +64,4 @@ class LocationAdmin(admin.ModelAdmin):
 admin.site.register(Category, CategoryAdmin)
 admin.site.register(Post, PostAdmin)
 admin.site.register(Location, LocationAdmin)
-admin.site.unregister([User, Group])
+# admin.site.unregister([User, Group])

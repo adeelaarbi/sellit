@@ -8,7 +8,7 @@
 					<div class="banner">
 						<!-- banner-form -->
 						<div class="banner-form banner-form-full">
-							<form action="{% url 'make-url' %}" method="get" data-location-url="{% url 'load-locations' %}" id="postForm">
+							<form action="{% url 'app:make-url' %}" method="get" data-location-url="{% url 'app:load-locations' %}" id="postForm">
                                 <select name="state" id="id_location" title="state">
                                     <option value="">Select State</option>
                                     {% for state in states %}
@@ -46,9 +46,17 @@
                     {% for object in locations %}
 					<div class="col-sm-6 col-md-4 col-lg-3">
 						<!-- featured -->
-                        <h4 class="item-title">{{ object.name }}</h4>
+                        <h4 class="item-title">
+                            <a href="{% url 'app:make-url' %}?location={{ object.id }}">
+                                {{ object.name }}
+                            </a>
+                        </h4>
                             {% for location in object.children.all %}
-                                <p class="item-title">{{ location.name }}</p>
+                                <p class="item-title">
+                                    <a href="{% url 'app:make-url' %}?location={{ location.id }}">
+                                        {{ location.name }}
+                                    </a>
+                                </p>
                             {% endfor %}
                         <!-- featured -->
 					</div>
@@ -72,9 +80,17 @@
                     {% for object in categories %}
 					<div class="col-sm-6 col-md-4 col-lg-3">
 						<!-- featured -->
-                        <h4 class="item-title">{{ object.name }}</h4>
+                        <h4 class="item-title">
+                            <a href="{% url 'app:make-url' %}?query={{ object.name | lower }}">
+                                {{ object.name }}
+                            </a>
+                        </h4>
                             {% for category in object.children.all %}
-                                <p class="item-title">{{ category.name }}</p>
+                                <p class="item-title">
+                                    <a href="{% url 'app:make-url' %}?query={{ category.name | lower }}">
+                                        {{ category.name }}
+                                    </a>
+                                </p>
                             {% endfor %}
                         <!-- featured -->
 					</div>
@@ -98,7 +114,7 @@
                     {% for post in posts %}
 					<div class="col-sm-6 col-md-4 col-lg-3">
 						<!-- featured -->
-                        <a href="{% url 'post-detail' post.slug %}">
+                        <a href="{% url 'app:post-detail' post.slug %}">
 						    <div class="featured">
 							<div class="featured-image" >
 								<img src="{% static post.post_image_url %}" alt="" height="250px" class="img-respocive">
