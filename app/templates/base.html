@@ -30,13 +30,13 @@
 <script>
     $(document).ready(function () {
         $('input').addClass('form-control');
+        $('#id_slug').hide();
         $('input:file').removeClass('form-control');
         $('textarea').addClass('form-control');
         $('select').addClass('form-control');
-        $('#id_slug').attr('readonly', true);
+        {#$('#id_slug').attr('readonly', true);#}
         $('#id_title').blur(function () {
-            let value = $(this).val();
-            $('#id_slug').val(convertToSlug(value));
+            $('#id_slug').val(convertToSlug($(this).val()));
         });
 
     });
