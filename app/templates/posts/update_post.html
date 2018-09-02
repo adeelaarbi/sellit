@@ -115,6 +115,15 @@
                                             <input type="text" id="tags" name="tags" value="{{ post.tags }}"/>
 										</div>
 									</div>
+                                    {% if user.is_superuser %}
+                                    <div class="row form-group item-description">
+                                        <label class="col-sm-3 label-tags" for="approved">Approved</label>
+                                        <div class="col-sm-9">
+                                            <input type="checkbox" id="approved" name="approved" value="" {% if post.approved %}
+                                                checked {% endif %}/>
+										</div>
+									</div>
+                                    {% endif %}
 {#									<div class="row">#}
 {#										<div class="col-sm-9 col-sm-offset-3">#}
 {#											<p>5000 characters left</p>#}

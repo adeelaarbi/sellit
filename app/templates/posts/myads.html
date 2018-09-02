@@ -71,8 +71,21 @@
                                     <div class="item-info col-sm-8">
                                         <!-- ad-info -->
                                         <div class="ad-info">
-                                            <h3 class="item-price">{{ post.price }}</h3>
-                                            <h4 class="item-title">{{ post.title }}</h4>
+                                            <h3 class="item-price">
+                                                {{ post.price }}
+                                                {% if post.approved %}
+                                                    <span class="pull-right btn-sm btn-success" style="color: white">
+                                                    approved
+                                                    </span>
+                                                {% else %}
+                                                    <span class="pull-right btn-sm btn-danger" style="color: white">
+                                                    not approved
+                                                    </span>
+                                                {% endif %}
+                                            </h3>
+                                            <h4 class="item-title">
+                                                {{ post.title }} |
+                                            </h4>
                                             <div class="item-cat">
                                                 <span><a href="#">{{ post.category.parent.name }}</a></span> /
                                                 <span><a href="#">{{ post.category.name }}</a></span>

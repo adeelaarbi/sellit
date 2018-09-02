@@ -80,6 +80,8 @@ def search_list(request, query=None):
 @login_required(login_url='login')
 def myads(request):
     posts = Post.objects.filter(user=request.user)
+    if request.user.is_superuser:
+        posts = Post.objects.all()
     return render(request, 'posts/myads.html', {'posts': posts, 'title': 'my ads'})
 
 
@@ -134,7 +136,7 @@ class PostAddView(generic.CreateView):
     model = Post
     template_name = 'posts/add_post.html'
     form_class = PostForm
-    success_url = 'app:posts'
+    success_url = 'app:my-ads'
     # queryset = None
 
     def get_context_data(self, **kwargs):
@@ -184,7 +186,7 @@ class PostUpdateView(generic.UpdateView):
     template_name = 'posts/update_post.html'
     fields = ['title', 'slug', 'description', 'price', 'image', 'phone_no', 'location', 'category']
     context_object_name = 'post'
-    success_url = 'posts'
+    success_url = 'app:my-ads'
     # queryset = None
 
     @method_decorator(login_required, name='dispatch')
@@ -207,6 +209,7 @@ class PostUpdateView(generic.UpdateView):
         if request.method == 'POST':
             form = self.get_form()
             errors = form.errors
+            approved = bool(request.POST.get("approved", False))
             if form.is_valid:
                 for k, value in form.data.items():
                     if hasattr(instance, k) and k != "slug" and k != "image" and k != "tags":
@@ -217,6 +220,7 @@ class PostUpdateView(generic.UpdateView):
                             v = int(value)
                             value = Location.objects.get(pk=v)
                         setattr(instance, k, value)
+                instance.approved = approved
                 instance.save()
                 # return HttpResponse("Ok")
                 image = upload_post_images(instance, request, update=True)
