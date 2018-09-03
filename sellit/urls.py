@@ -17,14 +17,14 @@ from django.contrib import admin
 from django.contrib.sitemaps.views import sitemap
 from django.urls import path, include
 import app.urls
-from app.sitemaps import PostSitemap, CategorySitemap, LocationSitemap, PostLocationSitemap, PostCategorySitemap
+from app.sitemaps import PostSitemap, CategorySitemap, LocationSitemap, TagLocationSitemap, CategoryLocationSitemap
 
 sitemaps = {
     'posts': PostSitemap,
     'categories': CategorySitemap,
     'locations': LocationSitemap,
-    'posts_locations': PostLocationSitemap,
-    'post_category': PostCategorySitemap
+    'tags_locations': TagLocationSitemap,
+    'location_category': CategoryLocationSitemap
 }
 
 urlpatterns = [

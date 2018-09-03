@@ -38,7 +38,7 @@ class Category(BaseModel):
         return self.name
 
     def get_absolute_url(self):
-        return reverse('app:search-list', args=[str(self.name).lower()])
+        return reverse('app:search-list', args=[str(self.name).replace(' ', '-').lower()])
 
     def load_image(self, width=50, height=50):
         url = '/static/sellit.png'

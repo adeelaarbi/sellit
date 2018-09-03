@@ -1,7 +1,7 @@
 from django.contrib.sitemaps import Sitemap
 from django.urls import reverse
 
-from app.models import Post, Category, Location
+from app.models import Post, Category, Location, Tag
 
 
 class PostSitemap(Sitemap):
@@ -13,11 +13,6 @@ class CategorySitemap(Sitemap):
     def items(self):
         return Category.objects.all()
 
-    def location(self, item):
-        item = self.items().filter(name=item).first()
-        item = str(item).replace(' ', '-').lower()
-        return reverse('app:search-list', args=[item])
-
 
 class LocationSitemap(Sitemap):
     def items(self):
@@ -25,26 +20,22 @@ class LocationSitemap(Sitemap):
 
     def location(self, item):
         item = self.items().filter(name=item).first()
-        item = str(item).replace(' ', '-').lower()
-        return reverse('app:search-list', args=[item])
+        return reverse('app:search-list', args=[str(item.name).replace(' ', '-').lower()])
 
 
-class PostLocationSitemap(Sitemap):
+class CategoryLocationSitemap(Sitemap):
     def items(self):
-        posts = [post.title + "-in-" + location.name for post in Post.objects.all() for location in Location.objects.all()]
-
+        posts = [str(post.name + "-in-" + location.name).replace(' ', '-') for post in Category.objects.all() for location in Location.objects.all()]
         return posts
 
     def location(self, obj):
-        obj = str(obj).replace(' ', '-').lower()
-        return reverse('app:search-list', args=[obj])
+        return reverse('app:search-list', args=[str(obj).lower()])
 
 
-class PostCategorySitemap(Sitemap):
+class TagLocationSitemap(Sitemap):
     def items(self):
-        posts = [post.title + "-in-" + location.name for post in Post.objects.all() for location in Category.objects.all()]
+        posts = [str(post.name + "-in-" + location.name).replace(' ', '-') for post in Tag.objects.all() for location in Location.objects.all()]
         return posts
 
     def location(self, obj):
-        obj = str(obj).replace(' ', '-').lower()
-        return reverse('app:search-list', args=[obj])
+        return reverse('app:search-list', args=[str(obj).lower()])
