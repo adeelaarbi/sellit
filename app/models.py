@@ -141,15 +141,16 @@ class Post(BaseModel):
         return ' '.join(full_path) + ' Pakistan'
 
     def categories(self):
-        if not self.category:
-            return "no category"
-        full_path = [self.category.name]
-        k = self.category.parent
+        try:
+            full_path = [self.category.name]
+            k = self.category.parent
 
-        while k is not None:
-            full_path.append(str(k.name))
-            k = k.parent
-        return ' '.join(full_path)
+            while k is not None:
+                full_path.append(str(k.name))
+                k = k.parent
+            return ' '.join(full_path)
+        except AttributeError as attr_error:
+            return "all"
 
     def search_query(self):
         query = str(self.title + " " + self.tags().replace(',', '') + " " + self.categories() + " " + self.address()).lower()
