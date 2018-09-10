@@ -141,6 +141,8 @@ class Post(BaseModel):
         return ' '.join(full_path) + ' Pakistan'
 
     def categories(self):
+        if not self.category.name:
+            return "no category"
         full_path = [self.category.name]
         k = self.category.parent
 
