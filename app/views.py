@@ -1,33 +1,14 @@
 import pycountry
-from django.contrib.auth.decorators import login_required
-from django.utils.decorators import method_decorator
+from django.contrib.auth import mixins
 from django.views import generic
-from django.contrib.auth import login, authenticate
 from django.shortcuts import render, redirect
 from app.utils import upload_post_images, add_tags
-from .forms import SignUpForm, PostForm
+from .forms import PostForm
 from .models import Post, Location, Category
 
 countries = [{str(country.name).lower(): str(country.name)} for country in pycountry.countries]
 
 # Create your views here
-
-
-def signup(request):
-    # errors = []
-    if request.method == 'POST':
-        form = SignUpForm(request.POST)
-        if form.is_valid():
-            form.save()
-            username = form.cleaned_data.get('username')
-            raw_password = form.cleaned_data.get('password1')
-            user = authenticate(username=username, password=raw_password)
-            login(request, user)
-            return redirect('app:posts')
-    else:
-        form = SignUpForm()
-    return render(request, 'posts/signup.html', {'errors': form.errors})
-
 
 def load_locations_categories(request):
     location_id = request.GET.get('location')
@@ -90,14 +71,6 @@ def search_list(request, query=None):
     return render(request, 'posts/search_list.html', {'posts': posts, 'states': states, 'title': str(query).capitalize(), 'count': count})
 
 
-@login_required(login_url='login')
-def myads(request):
-    posts = Post.objects.filter(user=request.user)
-    if request.user.is_superuser:
-        posts = Post.objects.all()
-    return render(request, 'posts/myads.html', {'posts': posts, 'title': 'my ads'})
-
-
 class PostListView(generic.ListView):
     model = Post
     template_name = 'posts/index.html'
@@ -145,11 +118,12 @@ class PostDetailView(generic.DetailView):
         return context
 
 
-class PostAddView(generic.CreateView):
+class PostAddView(mixins.LoginRequiredMixin, generic.CreateView):
     model = Post
     template_name = 'posts/add_post.html'
     form_class = PostForm
     success_url = 'app:my-ads'
+    login_url = "login"
     # queryset = None
 
     def get_context_data(self, **kwargs):
@@ -159,7 +133,6 @@ class PostAddView(generic.CreateView):
         context['title'] = 'add new ads'
         return context
 
-    @method_decorator(login_required(login_url='login'), name='dispatch')
     def post(self, request, *args, **kwargs):
         tags = request.POST.get('tags', [])
         form = self.get_form()
@@ -194,15 +167,28 @@ class PostAddView(generic.CreateView):
         return render(request, 'posts/add_post.html', {'errors': form.errors})
 
 
-class PostUpdateView(generic.UpdateView):
+class MyAds(mixins.LoginRequiredMixin, generic.ListView):
+    model = Post
+    template_name = "posts/myads.html"
+    login_url = "login"
+
+    def get_queryset(self):
+        posts = self.model.objects.filter(user=self.request.user)
+
+        if self.request.user.is_superuser:
+            posts = self.model.objects.all()
+        return posts
+
+
+class PostUpdateView(mixins.LoginRequiredMixin, generic.UpdateView):
     model = Post
     template_name = 'posts/update_post.html'
     fields = ['title', 'slug', 'description', 'price', 'image', 'phone_no', 'location', 'category']
     context_object_name = 'post'
     success_url = 'app:my-ads'
+    login_url = "login"
     # queryset = None
 
-    @method_decorator(login_required, name='dispatch')
     def get(self, request, *args, **kwargs):
         instance = Post.objects.get(pk=kwargs.get('pk'))
         form = PostForm(instance=instance)
@@ -212,7 +198,6 @@ class PostUpdateView(generic.UpdateView):
         form.fields['location'].queryset = locations
         return render(request, 'posts/update_post.html', {'form': form, 'post': instance, 'title': instance.title + ' | update'})
 
-    @method_decorator(login_required, name='dispatch')
     def post(self, request, *args, **kwargs):
         tags = request.POST.get('tags', [])
         instance = Post.objects.get(pk=kwargs.get('pk'))

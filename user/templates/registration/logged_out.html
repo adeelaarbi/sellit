@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+{% block title %}
+    Logout | {{ block.super }}
+{% endblock %}
+
+{% block content %}
+    <section class="clearfix" id="main">
+        <div class="container">
+            <div class="alert alert-success" role="alert">
+                <strong>Logged out successfully.</strong>
+            </div>
+            <a href="{% url 'login' %}" class="btn btn-primary">
+            Login
+        </a>
+        <a href="{% url 'app:posts' %}" class="btn btn-primary">
+            Return Home
+        </a>
+        </div>
+    </section>
+{% endblock %}

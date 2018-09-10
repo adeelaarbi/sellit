@@ -16,18 +16,21 @@ Including another URLconf
 from django.contrib import admin
 from django.contrib.sitemaps.views import sitemap
 from django.urls import path, include
-from app.sitemaps import PostSitemap, CategorySitemap, LocationSitemap, PostLocationSitemap, PostCategorySitemap
+import app.urls
+import user.urls
+from app.sitemaps import PostSitemap, CategorySitemap, LocationSitemap, TagLocationSitemap, CategoryLocationSitemap
 
 sitemaps = {
     'posts': PostSitemap,
     'categories': CategorySitemap,
     'locations': LocationSitemap,
-    'posts_locations': PostLocationSitemap,
-    'post_category': PostCategorySitemap
+    'tags_locations': TagLocationSitemap,
+    'location_category': CategoryLocationSitemap
 }
 
 urlpatterns = [
-    path('', include('app.urls')),
+    path('user/', include(user.urls)),
     path('admin/', admin.site.urls),
-    path('sitemaps.xml', sitemap, {'sitemaps': sitemaps})
+    path('sitemaps.xml', sitemap, {'sitemaps': sitemaps}),
+    path('', include(app.urls, namespace='app')),
 ]
