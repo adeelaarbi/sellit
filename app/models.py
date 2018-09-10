@@ -1,4 +1,5 @@
 import pycountry
+from django.template.defaultfilters import slugify
 from django.contrib.auth.models import User
 from django.db import models
 from django.urls import reverse
@@ -38,7 +39,7 @@ class Category(BaseModel):
         return self.name
 
     def get_absolute_url(self):
-        return reverse('app:search-list', args=[str(self.name).replace(' ', '-').lower()])
+        return reverse('app:search-list', args=[str(self.slug)])
 
     def load_image(self, width=50, height=50):
         url = '/static/sellit.png'
@@ -51,6 +52,9 @@ class Location(models.Model):
     name = models.CharField(max_length=100, blank=True, null=True)
     country = models.CharField(max_length=30, choices=countries, default="pakistan")
     parent = models.ForeignKey('self', blank=True, null=True, related_name='children',default='Pakistan', on_delete=models.CASCADE)
+
+    def slug(self):
+        return slugify(self.name)
 
     class Meta:
         ordering = ('name',)
@@ -66,6 +70,9 @@ class Location(models.Model):
         #
         # return ' --> '.join(full_path)
         return self.name
+
+    def generate_slug(self):
+        return str(self.name).replace(' ', '-').lower()
 
     def location(self):
         full_path = [self.name]

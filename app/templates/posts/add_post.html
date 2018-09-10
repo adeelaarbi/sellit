@@ -1,6 +1,10 @@
 {% extends 'base.html' %}
 {% load static %}
 
+{% block title %}
+	New Post | {{ block.super }}
+{% endblock %}
+
 {% block content %}
     <!-- main -->
 	<section id="main" class="clearfix ad-details-page">

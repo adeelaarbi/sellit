@@ -1,5 +1,8 @@
 {% extends 'base.html' %}
 {% load static %}
+{% block title %}
+	Home | {{ block.super }}
+{% endblock %}
 {% block content %}
 		<div class="container">
 			<div class="row">
@@ -8,7 +11,8 @@
 					<div class="banner">
 						<!-- banner-form -->
 						<div class="banner-form banner-form-full">
-							<form action="{% url 'app:make-url' %}" method="get" data-location-url="{% url 'app:load-locations' %}" id="postForm">
+							<form action="{% url 'app:make-url' %}" method="post" data-location-url="{% url 'app:load-locations' %}" id="postForm">
+                            {% csrf_token %}
                                 <select name="state" id="id_location" title="state">
                                     <option value="">Select State</option>
                                     {% for state in states %}
@@ -47,13 +51,13 @@
 					<div class="col-sm-6 col-md-4 col-lg-3">
 						<!-- featured -->
                         <h4 class="item-title">
-                            <a href="{% url 'app:make-url' %}?location={{ object.id }}">
+                            <a href="{% url 'app:make-url' %}?location={{ object.slug }}">
                                 {{ object.name }}
                             </a>
                         </h4>
                             {% for location in object.children.all %}
                                 <p class="item-title">
-                                    <a href="{% url 'app:make-url' %}?location={{ location.id }}">
+                                    <a href="{% url 'app:make-url' %}?location={{ location.slug }}">
                                         {{ location.name }}
                                     </a>
                                 </p>
@@ -81,13 +85,13 @@
 					<div class="col-sm-6 col-md-4 col-lg-3">
 						<!-- featured -->
                         <h4 class="item-title">
-                            <a href="{% url 'app:make-url' %}?query={{ object.name | lower }}">
+                            <a href="{% url 'app:make-url' %}?query={{ object.slug }}">
                                 {{ object.name }}
                             </a>
                         </h4>
                             {% for category in object.children.all %}
                                 <p class="item-title">
-                                    <a href="{% url 'app:make-url' %}?query={{ category.name | lower }}">
+                                    <a href="{% url 'app:make-url' %}?query={{ category.slug }}">
                                         {{ category.name }}
                                     </a>
                                 </p>

@@ -1,16 +1,21 @@
 {% extends 'base.html' %}
 {% load static%}
 
+{% block title %}
+    {{ title }} | {{ block.super }}
+{% endblock %}
+
 {% block content %}
 
    <!-- main -->
-	<section id="main" class="clearfix category-page main-categories">
-		<div class="container">
-			<div class="banner">
+    <section id="main" class="clearfix category-page main-categories">
+        <div class="container">
+            <div class="banner">
 
-				<!-- banner-form -->
-				<div class="banner-form banner-form-full">
-                    <form action="{% url 'app:make-url' %}" method="get" data-location-url="{% url 'app:load-locations' %}" id="postForm">
+                <!-- banner-form -->
+                <div class="banner-form banner-form-full">
+                    <form action="{% url 'app:make-url' %}" method="post" data-location-url="{% url 'app:load-locations' %}" id="postForm">
+                    {% csrf_token %}
                                 <select name="state" id="id_location" title="state">
                                     <option value="">Select State</option>
                                     {% for state in states %}
@@ -20,17 +25,17 @@
                                 <select name="location" id="id_city" title="state">
                                     <option value="">Select City</option>
                                 </select>
-								<input type="text" name="query" class="form-control" placeholder="Type Your key word">
-								<button type="submit" class="form-control" value="Search">Search</button>
-							</form>
-				</div>
+                                <input type="text" name="query" class="form-control" placeholder="Type Your key word">
+                                <button type="submit" class="form-control" value="Search">Search</button>
+                            </form>
+                </div>
                 <!-- banner-form -->
-			</div>
-			<div class="category-info">
+            </div>
+            <div class="category-info">
                 <div class="section recommended-ads">
                     <!-- featured-top -->
                     <div class="featured-top">
-                        <h4>{{ title | capfirst }}</h4>
+                        <h4>{{ title }}</h4>
                         <div class="dropdown pull-right">
 
                         <!-- category-change -->
@@ -111,21 +116,21 @@
                     </div>
                     <!-- pagination  -->
                 </div>
-			</div>
-		</div><!-- container -->
-	</section><!-- main -->
+            </div>
+        </div><!-- container -->
+    </section><!-- main -->
 
 
-	<section id="something-sell" class="clearfix parallax-section">
-		<div class="container">
-			<div class="row">
-				<div class="col-sm-12 text-center">
-					<h2 class="title">Do you have something-sell?</h2>
-					<h4>Post your ad for free on Trade.com</h4>
-					<a href="{% url 'app:add-post' %}" class="btn btn-primary">Post Your Ad</a>
-				</div>
-			</div><!-- row -->
-		</div><!-- contaioner -->
-	</section><!-- something-sell -->
+    <section id="something-sell" class="clearfix parallax-section">
+        <div class="container">
+            <div class="row">
+                <div class="col-sm-12 text-center">
+                    <h2 class="title">Do you have something-sell?</h2>
+                    <h4>Post your ad for free on Trade.com</h4>
+                    <a href="{% url 'app:add-post' %}" class="btn btn-primary">Post Your Ad</a>
+                </div>
+            </div><!-- row -->
+        </div><!-- contaioner -->
+    </section><!-- something-sell -->
 
 {% endblock content %}

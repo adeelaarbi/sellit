@@ -4,11 +4,8 @@ from django.conf.urls.static import static
 from django.conf import settings
 from . import views
 app_name = "app"
-urlpatterns = [
-    path('login/', auth_views.login, {'template_name': 'posts/signin.html'}, name='login'),
-    path('logout/', auth_views.logout, {'next_page': '/'}, name='logout'),
-    path('signup/', views.signup, name='signup'),
-    path('myads/', views.myads, name='my-ads'),
+urlpatterns = [    
+    path('myads/', views.MyAds.as_view(), name='my-ads'),
     path('make/url', views.make_url, name='make-url'),
     path('ads/<str:query>', views.search_list, name='search-list'),
     path('post/add', views.PostAddView.as_view(), name='add-post'),

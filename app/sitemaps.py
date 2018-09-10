@@ -5,6 +5,7 @@ from app.models import Post, Category, Location, Tag
 
 
 class PostSitemap(Sitemap):
+    limit = 10
     def items(self):
         return Post.objects.all()
 
@@ -20,12 +21,12 @@ class LocationSitemap(Sitemap):
 
     def location(self, item):
         item = self.items().filter(name=item).first()
-        return reverse('app:search-list', args=[str(item.name).replace(' ', '-').lower()])
+        return reverse('app:search-list', args=[item.slug()])
 
 
 class CategoryLocationSitemap(Sitemap):
     def items(self):
-        posts = [str(post.name + "-in-" + location.name).replace(' ', '-') for post in Category.objects.all() for location in Location.objects.all()]
+        posts = [str(post.slug + "-in-" + location.slug()) for post in Category.objects.all() for location in Location.objects.all()]
         return posts
 
     def location(self, obj):
@@ -34,7 +35,7 @@ class CategoryLocationSitemap(Sitemap):
 
 class TagLocationSitemap(Sitemap):
     def items(self):
-        posts = [str(post.name + "-in-" + location.name).replace(' ', '-') for post in Tag.objects.all() for location in Location.objects.all()]
+        posts = [str(post.slug + "-in-" + location.slug()) for post in Tag.objects.all() for location in Location.objects.all()]
         return posts
 
     def location(self, obj):

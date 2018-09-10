@@ -17,6 +17,7 @@ from django.contrib import admin
 from django.contrib.sitemaps.views import sitemap
 from django.urls import path, include
 import app.urls
+import user.urls
 from app.sitemaps import PostSitemap, CategorySitemap, LocationSitemap, TagLocationSitemap, CategoryLocationSitemap
 
 sitemaps = {
@@ -28,6 +29,7 @@ sitemaps = {
 }
 
 urlpatterns = [
+    path('user/', include(user.urls)),
     path('admin/', admin.site.urls),
     path('sitemaps.xml', sitemap, {'sitemaps': sitemaps}),
     path('', include(app.urls, namespace='app')),

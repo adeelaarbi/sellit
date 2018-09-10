@@ -58,7 +58,7 @@ class PostAdmin(admin.ModelAdmin):
 
 
 class LocationAdmin(admin.ModelAdmin):
-    list_display = ['id', 'name', 'parent_id', 'country']
+    list_display = ['id', 'name', 'slug', 'parent_id', 'country']
 
 
 admin.site.register(Category, CategoryAdmin)
