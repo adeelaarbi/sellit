@@ -11,7 +11,7 @@
 					<div class="user-account">
 						<h2>User Login</h2>
 						<!-- form -->
-						<form action="{% url 'login' %}" method="post">
+						<form action="{% url 'app:login' %}" method="post">
                             {% csrf_token %}
 							<div class="form-group">
 								<input type="text" name="username" class="form-control" placeholder="Username" >
@@ -32,7 +32,7 @@
 							</div>
 						</div><!-- forgot-password -->
 					</div>
-					<a href="{% url 'signup' %}" class="btn-primary">Create a New Account</a>
+					<a href="{% url 'app:signup' %}" class="btn-primary">Create a New Account</a>
 				</div><!-- user-login -->
 			</div><!-- row -->
 		</div><!-- container -->

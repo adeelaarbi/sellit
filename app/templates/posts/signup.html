@@ -11,7 +11,7 @@
 				<div class="col-sm-8 col-sm-offset-2 col-md-6 col-md-offset-3">
 					<div class="user-account">
 						<h2>Create a Trade Account</h2>
-						<form action="{% url 'signup' %}" method="post" name="form_citydetails" id="form_citydetails" enctype="multipart/form-data">
+						<form action="{% url 'app:signup' %}" method="post" name="form_citydetails" id="form_citydetails" enctype="multipart/form-data">
                             {% csrf_token %}
 							<div class="form-group">
 								<input type="text" name="username" class="form-control" placeholder="Username" >

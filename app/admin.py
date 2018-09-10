@@ -58,10 +58,10 @@ class PostAdmin(admin.ModelAdmin):
 
 
 class LocationAdmin(admin.ModelAdmin):
-    list_display = ['id', 'name', 'parent_id', 'country']
+    list_display = ['id', 'name', 'slug', 'parent_id', 'country']
 
 
 admin.site.register(Category, CategoryAdmin)
 admin.site.register(Post, PostAdmin)
 admin.site.register(Location, LocationAdmin)
-admin.site.unregister([User, Group])
+# admin.site.unregister([User, Group])

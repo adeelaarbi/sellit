@@ -141,7 +141,7 @@
                     {% for post in posts %}
 					<div class="col-sm-6 col-md-4 col-lg-3">
 						<!-- featured -->
-                        <a href="{% url 'post-detail' post.slug %}">
+                        <a href="{% url 'app:post-detail' post.slug %}">
 						    <div class="featured">
 							<div class="featured-image" >
 								<img src="{% static post.post_image_url %}" alt="" height="250px" class="img-respocive">
@@ -208,7 +208,7 @@
 				<div class="col-sm-12 text-center">
 					<h2 class="title">Do you have something-sell?</h2>
 					<h4>Post your ad for free on Trade.com</h4>
-					<a href="{% url 'add-post' %}" class="btn btn-primary">Post Your Ad</a>
+					<a href="{% url 'app:add-post' %}" class="btn btn-primary">Post Your Ad</a>
 				</div>
 			</div><!-- row -->
 		</div><!-- contaioner -->

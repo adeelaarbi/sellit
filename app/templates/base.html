@@ -6,7 +6,13 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="author" content="Theme Region">
    	<meta name="description" content="">
-    <title>{% block title %}{% if title %}{{ title }}{% endif %}{% endblock %}</title>
+    <title>
+        {% block title %}
+            {% if title %}
+                {{ title }}
+            {% endif %}
+        {% endblock %}
+    </title>
     {% include 'head.html' %}
 </head>
 
@@ -24,13 +30,13 @@
 <script>
     $(document).ready(function () {
         $('input').addClass('form-control');
+        $('#id_slug').hide();
         $('input:file').removeClass('form-control');
         $('textarea').addClass('form-control');
         $('select').addClass('form-control');
-        $('#id_slug').attr('readonly', true);
+        {#$('#id_slug').attr('readonly', true);#}
         $('#id_title').blur(function () {
-            let value = $(this).val();
-            $('#id_slug').val(convertToSlug(value));
+            $('#id_slug').val(convertToSlug($(this).val()));
         });
 
     });

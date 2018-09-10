@@ -20,7 +20,7 @@
 			<div class="adpost-details">
 				<div class="row">
 					<div class="col-md-12">
-						<form action="{% url 'update-post' post.id %}" method="post" enctype="multipart/form-data">
+						<form action="{% url 'app:update-post' post.id %}" method="post" enctype="multipart/form-data">
                             {% csrf_token %}
 							<fieldset>
 								<div class="section postdetails col-md-6" style="background: none">
@@ -31,12 +31,13 @@
 											{{ form.title }}
 										</div>
 									</div>
-                                    <div class="row form-group add-title">
-										<label class="col-sm-3 label-title">Slug<span class="required">*</span></label>
-										<div class="col-sm-9">
-											{{ form.slug }}
-										</div>
-									</div>
+                                    {{ form.slug }}
+{#                                    <div class="row form-group add-title">#}
+{#										<label class="col-sm-3 label-title">Slug<span class="required">*</span></label>#}
+{#										<div class="col-sm-9">#}
+{#											#}
+{#										</div>#}
+{#									</div>#}
 {#									<div class="row form-group add-image">#}
 {#										<label class="col-sm-3 label-title">Photos for your ad <span>(This will be your cover photo )</span> </label>#}
 {#										<div class="col-sm-9">#}
@@ -115,6 +116,15 @@
                                             <input type="text" id="tags" name="tags" value="{{ post.tags }}"/>
 										</div>
 									</div>
+                                    {% if user.is_superuser %}
+                                    <div class="row form-group item-description">
+                                        <label class="col-sm-3 label-tags" for="approved">Approved</label>
+                                        <div class="col-sm-9">
+                                            <input type="checkbox" id="approved" name="approved" {% if post.approved %}
+                                                checked {% endif %}/>
+										</div>
+									</div>
+                                    {% endif %}
 {#									<div class="row">#}
 {#										<div class="col-sm-9 col-sm-offset-3">#}
 {#											<p>5000 characters left</p>#}
