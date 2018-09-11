@@ -170,6 +170,7 @@ class PostAddView(mixins.LoginRequiredMixin, generic.CreateView):
 class MyAds(mixins.LoginRequiredMixin, generic.ListView):
     model = Post
     template_name = "posts/myads.html"
+    context_object_name = "posts"
     login_url = "login"
 
     def get_queryset(self):
