@@ -46,6 +46,6 @@ urlpatterns = [
     path('user/', include(user.urls)),
     path('admin/', admin.site.urls),
     path('sitemaps.xml', views.index, {'sitemaps': sitemaps}),
-    path('<section>-sitemap.xml', views.sitemap, {'sitemaps': sitemaps}, name='django.contrib.sitemaps.views.sitemap'),
+    path('sitemaps-<section>', views.sitemap, {'sitemaps': sitemaps}, name='django.contrib.sitemaps.views.sitemap'),
     path('', include(app.urls, namespace='app')),
 ]
